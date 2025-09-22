@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pokeapi_flutter/utils/color_utils.dart';
 import 'package:pokeapi_flutter/utils/font_utils.dart';
+import 'package:pokeapi_flutter/widget/pokedex_header.dart';
+import 'package:pokeapi_flutter/widget/search_box.dart';
+import 'package:pokeapi_flutter/widget/sort_button.dart';
 
 class PokedexScreen extends ConsumerStatefulWidget {
   const PokedexScreen({super.key});
@@ -21,30 +24,36 @@ class _PokedexScreen extends ConsumerState<PokedexScreen> {
     return Scaffold(
       backgroundColor: ColorUtils.primary,
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.only(left: 16, top: 8, right: 16),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              ColorFiltered(
-                colorFilter: ColorFilter.mode(
-                  ColorUtils.white,
-                  BlendMode.srcATop,
-                ),
-                child: Image.asset(
-                  "assets/images/pokeball.png",
-                  width: 32,
-                  height: 32,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(left: 16, top: 8, right: 16),
+              child: PokedexHeader(),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 16, top: 8, right: 16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Expanded(child: SizedBox(height: 32, child: SearchBox())),
+                  SizedBox(width: 8),
+                  SizedBox(width: 32, height: 32, child: SortButton()),
+                ],
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.all(16),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: ColorUtils.white,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
                 ),
               ),
-              SizedBox(width: 8),
-              Text(
-                "Pokédex",
-                style: FontUtils.headerHeadline(color: ColorUtils.white),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
