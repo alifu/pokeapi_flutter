@@ -29,7 +29,7 @@ class _SearchBox extends ConsumerState<SearchBox> {
     return Container(
       decoration: BoxDecoration(
         color: ColorUtils.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,

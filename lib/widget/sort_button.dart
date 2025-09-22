@@ -10,7 +10,7 @@ class SortButton extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: ColorUtils.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(20),
       ),
       child: Padding(
         padding: EdgeInsets.all(8),

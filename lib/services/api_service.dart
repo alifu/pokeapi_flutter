@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import '../models/pokedex.dart';
+import 'package:pokeapi_flutter/models/pokedex.dart';
 
 class ApiService {
-  static const baseUrl = 'https://pokeapi.co/api/v2';
+  // static const baseUrl = 'https://pokeapi.co/api/v2';
+  static const baseUrl = 'http://localhost:3002';
 
   Future<List<Pokedex>> fetchPokedex({
     int limit = 20,
