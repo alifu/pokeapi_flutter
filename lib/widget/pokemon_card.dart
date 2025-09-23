@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pokeapi_flutter/extension/string_extension.dart';
 import 'package:pokeapi_flutter/utils/color_utils.dart';
 import 'package:pokeapi_flutter/utils/font_utils.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class PokemonCard extends StatelessWidget {
   final int id;
@@ -78,7 +79,32 @@ class PokemonCard extends StatelessWidget {
               ),
             ),
 
-            Image.network(imageUrl, height: 72, width: 72, fit: BoxFit.contain),
+            SizedBox(
+              width: 72,
+              height: 72,
+              child: CachedNetworkImage(
+                imageUrl: imageUrl,
+                placeholder: (context, url) => Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    image: const DecorationImage(
+                      image: AssetImage("assets/images/silhouette.png"),
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
+                imageBuilder: (context, imageProvider) => Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    image: DecorationImage(
+                      image: imageProvider,
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),

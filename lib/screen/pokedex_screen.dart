@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pokeapi_flutter/providers/pokemon_provider.dart';
+import 'package:pokeapi_flutter/providers/pokedex_provider.dart';
+import 'package:pokeapi_flutter/screen/pokemon_screen.dart';
 import 'package:pokeapi_flutter/utils/color_utils.dart';
 import 'package:pokeapi_flutter/widget/pokedex_header.dart';
 import 'package:pokeapi_flutter/widget/pokemon_card.dart';
@@ -30,16 +31,12 @@ class _PokedexScreenState extends ConsumerState<PokedexScreen> {
   Widget build(BuildContext context) {
     final state = ref.watch(pokedexProvider);
 
-    if (state.isLoading && state.pokemons.isEmpty) {
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
+    if (state.isLoading && state.pokedex.isEmpty) {
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
-    if (state.hasError && state.pokemons.isEmpty) {
-      return const Scaffold(
-        body: Center(child: Text('Error loading data')),
-      );
+    if (state.hasError && state.pokedex.isEmpty) {
+      return const Scaffold(body: Center(child: Text('Error loading data')));
     }
 
     return Scaffold(
@@ -77,34 +74,40 @@ class _PokedexScreenState extends ConsumerState<PokedexScreen> {
                   ),
                   child: GridView.builder(
                     padding: const EdgeInsets.all(8),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3, // 🔹 3 columns
-                      crossAxisSpacing: 8,
-                      mainAxisSpacing: 8,
-                      childAspectRatio: 1, // 🔹 adjust height vs width
-                    ),
-                    itemCount: state.pokemons.length + 1,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3, // 🔹 3 columns
+                          crossAxisSpacing: 8,
+                          mainAxisSpacing: 8,
+                          childAspectRatio: 1, // 🔹 adjust height vs width
+                        ),
+                    itemCount: state.pokedex.length + 1,
                     itemBuilder: (context, index) {
-                      if (index == state.pokemons.length) {
+                      if (index == state.pokedex.length) {
                         // 🔥 Load more
                         if (!state.isLoading) {
                           WidgetsBinding.instance.addPostFrameCallback((_) {
                             ref.read(pokedexProvider.notifier).loadPokemons();
                           });
                         }
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
+                        return const Center(child: CircularProgressIndicator());
                       }
 
-                      final pokemon = state.pokemons[index];
+                      final pokemon = state.pokedex[index];
                       return PokemonCard(
                         id: pokemon.id,
                         name: pokemon.name,
                         imageUrl: pokemon.imageUrl,
                         onTap: () {
-                          // 🔹 navigate to detail screen later
-                          print("Tapped on ${pokemon.name}");
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => PokemonScreen(
+                                pokedex: state.pokedex,
+                                index: index,
+                              ),
+                            ),
+                          );
                         },
                       );
                     },
